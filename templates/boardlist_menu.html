@@ -13,4 +13,17 @@
                         {% endfor %}
                 </fieldset>
 	{% endfor %}
+
+        {% for category, links in config.boardlist_menu_additional %}
+                <fieldset>
+                        <legend>
+                                {{ category }}
+                        </legend>
+                        {% for title, uri in links %}
+                                <li>
+                                        <a href="{{ uri }}">{{ title }}</a>
+                                </li>
+                        {% endfor %}
+                </fieldset>
+	{% endfor %}
 </div>

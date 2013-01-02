@@ -585,6 +585,15 @@
         //                "f/" => "F"
         //        ),
 	//);
+
+	// Boardlist Menu Additional
+	// You can put there external links (js/boardlist.js)
+        //$config['boardlist_menu_additional'] = array(
+        //        "Links" => array(
+        //                "Tinyboard" => "http://tinyboard.org"
+        //                "Donate" => "donate.html",
+        //        ),         
+	//);
 	
 	// Categories
 	// Required for the Categories theme.
