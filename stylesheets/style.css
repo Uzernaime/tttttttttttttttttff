@@ -492,6 +492,10 @@ table.mod.config-editor input[type="text"] {
   left: 200px;
 }
 
+.mobile-style .bl-show, .mobile-style .bl-menu {
+  display: none;
+}
+
 #attention_bar {
   height: 1.5em;
   width: 100%;
