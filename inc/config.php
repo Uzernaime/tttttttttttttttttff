@@ -570,6 +570,21 @@
 	//	array('k', array('l', 'm')),
 	//	array('status' => 'http://status.example.org/')
 	//);
+
+	// Boardlist Menu
+	// You can put there everything you want to put in a boardlist menu (js/boardlist.js)
+        //$config['boardlist_menu'] = array(
+        //        "Cat1" => array(
+        //                "a/" => "Chinese Fairytales"
+        //                "b/" => "Random",
+        //                "c/" => "Code",
+        //        ),         
+        //        "Cat2" => array(
+        //                "d/" => "D",
+        //                "e/" => "E",
+        //                "f/" => "F"
+        //        ),
+	//);
 	
 	// Categories
 	// Required for the Categories theme.
