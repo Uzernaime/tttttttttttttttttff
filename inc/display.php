@@ -25,16 +25,15 @@ function doBoardListPart($list, $root) {
 	$body = '';
 	foreach ($list as $board) {
 		if (is_array($board))
-			$body .= ' <span class="sub">[' . doBoardListPart($board, $root) . ']</span> ';
+			$body .= '<div class="sub">' . doBoardListPart($board, $root) . '</div>';
 		else {
 			if (($key = array_search($board, $list)) && gettype($key) == 'string') {
-				$body .= ' <a href="' . $board . '">' . $key . '</a> /';
+				$body .= '<div class="board"><a href="' . $board . '">' . $key . '</a></div>';
 			} else {			
-				$body .= ' <a href="' . $root . $board . '/' . $config['file_index'] . '">' . $board . '</a> /';
+				$body .= '<div class="board"><a href="' . $root . $board . '/' . $config['file_index'] . '">' . $board . '</a></div>';
 			}
 		}
 	}
-	$body = preg_replace('/\/$/', '', $body);
 	
 	return $body;
 }
@@ -45,8 +44,6 @@ function createBoardlist($mod=false) {
 	if (!isset($config['boards'])) return array('top'=>'','bottom'=>'');
 	
 	$body = doBoardListPart($config['boards'], $mod?'?/':$config['root']);
-	if (!preg_match('/\] $/', $body))
-		$body = '[' . $body . ']';
 	
 	$body = trim($body);
 	
