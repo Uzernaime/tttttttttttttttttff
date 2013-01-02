@@ -210,6 +210,9 @@ div.post.reply {
 	border-color: #B7C5D9;
 	display: inline-block;
 }
+div.post.post-hover {
+	background-color: #b7c5d9;
+}
 span.trip {
 	color: #228854;
 }
