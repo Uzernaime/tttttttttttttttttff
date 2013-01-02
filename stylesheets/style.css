@@ -415,7 +415,7 @@ table.mod.config-editor input[type="text"] {
   /*background-color: red;*/
 }
 .desktop-style .boardlist:not(.bottom) {
-  min-height: 3.5em;
+  min-height: 4em;
 }
 .desktop-style .boardlist.bottom .board {
   vertical-align: bottom;
