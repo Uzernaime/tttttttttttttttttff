@@ -59,15 +59,15 @@ $pages = array(
 
 	// CSRF-protected moderator actions
 	'/ban'					=> 'secure_POST ban',	// new ban
-	'/(\w+)/ban(&delete)?/(\d+)'		=> 'secure_POST ban_post', // ban poster
-	'/(\w+)/move/(\d+)'			=> 'secure_POST move',	// move thread
-	'/(\w+)/delete/(\d+)'			=> 'secure delete',	// delete post
-	'/(\w+)/deletefile/(\d+)'		=> 'secure deletefile',	// delete file from post
-	'/(\w+)/deletebyip/(\d+)(/global)?'	=> 'secure deletebyip',	// delete all posts by IP address
-	'/(\w+)/(un)?lock/(\d+)'		=> 'secure lock',	// lock thread
-	'/(\w+)/edit/(\d+)'			=> 'secure edit_post',	// edit post
-	'/(\w+)/(un)?sticky/(\d+)'		=> 'secure sticky',	// sticky thread
-	'/(\w+)/bump(un)?lock/(\d+)'		=> 'secure bumplock',	// "bumplock" thread
+	'/([\w+.]+)/ban(&delete)?/(\d+)'		=> 'secure_POST ban_post', // ban poster
+	'/([\w+.]+)/move/(\d+)'			=> 'secure_POST move',	// move thread
+	'/([\w+.]+)/delete/(\d+)'			=> 'secure delete',	// delete post
+	'/([\w+.]+)/deletefile/(\d+)'		=> 'secure deletefile',	// delete file from post
+	'/([\w+.]+)/deletebyip/(\d+)(/global)?'	=> 'secure deletebyip',	// delete all posts by IP address
+	'/([\w+.]+)/(un)?lock/(\d+)'		=> 'secure lock',	// lock thread
+	'/([\w+.]+)/edit/(\d+)'			=> 'secure edit_post',	// edit post
+	'/([\w+.]+)/(un)?sticky/(\d+)'		=> 'secure sticky',	// sticky thread
+	'/([\w+.]+)/bump(un)?lock/(\d+)'		=> 'secure bumplock',	// "bumplock" thread
 	
 	'/themes'				=> 'themes_list',	// manage themes
 	'/themes/(\w+)'				=> 'theme_configure',	// configure/reconfigure theme
@@ -80,10 +80,10 @@ $pages = array(
 	'/debug/antispam'			=> 'debug_antispam',
 	
 	// This should always be at the end:
-	'/(\w+)/'										=> 'view_board',
-	'/(\w+)/' . preg_quote($config['file_index'], '!')					=> 'view_board',
-	'/(\w+)/' . str_replace('%d', '(\d+)', preg_quote($config['file_page'], '!'))		=> 'view_board',
-	'/(\w+)/' . preg_quote($config['dir']['res'], '!') .
+	'/([\w+.]+)/'										=> 'view_board',
+	'/([\w+.]+)/' . preg_quote($config['file_index'], '!')					=> 'view_board',
+	'/([\w+.]+)/' . str_replace('%d', '(\d+)', preg_quote($config['file_page'], '!'))		=> 'view_board',
+	'/([\w+.]+)/' . preg_quote($config['dir']['res'], '!') .
 			str_replace('%d', '(\d+)', preg_quote($config['file_page'], '!'))	=> 'view_thread',
 	'/(\w+)/' . preg_quote($config['dir']['res'], '!') . 
                         str_replace('%d', '(\d+)', preg_quote($config['file_page50'], '!'))	=> 'view_thread',
