@@ -360,9 +360,6 @@ class Thread {
 	public function add(Post $post) {
 		$this->posts[] = $post;
 	}
-	public function postCount() {
-	       return count($this->posts) + $this->omitted;
-	}
 	public function postControls() {
 		global $board, $config;
 		
@@ -430,12 +427,10 @@ class Thread {
 		return fraction($this->filex, $this->filey, ':');
 	}
 	
-	public function build($index=false, $isnoko50=false) {
+	public function build($index=false) {
 		global $board, $config, $debug;
 		
-		$hasnoko50 = $this->postCount() >= $config['noko50_min'];
-
-		$built = Element('post_thread.html', array('config' => $config, 'board' => $board, 'post' => &$this, 'index' => $index, 'hasnoko50' => $hasnoko50, 'isnoko50' => $isnoko50));
+		$built = Element('post_thread.html', array('config' => $config, 'board' => $board, 'post' => &$this, 'index' => $index));
 		
 		if (!$this->mod && $index && $config['cache']['enabled']) {
 			cache::set($this->cache_key($index), $built);
