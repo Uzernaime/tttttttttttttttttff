@@ -437,16 +437,7 @@ class Thread {
 
 		$built = Element('post_thread.html', Array('config' => $config, 'board' => $board, 'post' => &$this, 'index' => $index, 'hasnoko50' => $hasnoko50, 'isnoko50' => $isnoko50));
 		
-		if (!$this->mod && $index && $config['cache']['enabled']) {
-			cache::set($this->cache_key($index), $built);
-		}
-		
 		return $built;
-	}
-	function cache_key($index) {
-		global $board;
-		
-		return 'thread_' . ($index ? 'index_' : '') . $board['uri'] . '_' . $this->id;
 	}
 };
 
