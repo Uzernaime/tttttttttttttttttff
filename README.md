@@ -9,11 +9,13 @@ without hitting the disk at all. See nginx's HttpRedis2Module module for more of
 
 If you don't have HttpRedis2Module, i've included a 404.php that you can use with an htaccess like:
 
-# for /vichan/* base
+```
 RewriteEngine On
 RewriteRule ^[^/]+/$ %{REQUEST_URI}/../../404.php [NC,L]
 RewriteRule ^[^/]+/[^/]+$ %{REQUEST_URI}/../../404.php [NC,L]
 RewriteRule ^[^/]+/res/[^/]+$ %{REQUEST_URI}/../../404.php [NC,L]
+```
+This example assumes your URL includes one directory level, i.e. http://localhost/vichan/
 
 About vichan
 ------------
