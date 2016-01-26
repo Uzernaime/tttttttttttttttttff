@@ -1,21 +1,7 @@
-modified vichan
+vichan - A lightweight and full featured PHP imageboard.
 ========================================================
 
-OdiliTime Modifications
------------------------
-This is a reduced disk-IO version that does not write the HTML or JSON files to disk.
-It writes them to a redis-backed memory store which then can be quickly retrieved by a webserver
-without hitting the disk at all. See nginx's HttpRedis2Module module for more of what I mean.
-
-If you don't have HttpRedis2Module, i've included a 404.php that you can use with an htaccess like:
-
-# for /vichan/* base
-RewriteEngine On
-RewriteRule ^[^/]+/$ %{REQUEST_URI}/../../404.php [NC,L]
-RewriteRule ^[^/]+/[^/]+$ %{REQUEST_URI}/../../404.php [NC,L]
-RewriteRule ^[^/]+/res/[^/]+$ %{REQUEST_URI}/../../404.php [NC,L]
-
-About vichan
+About
 ------------
 vichan is a free light-weight, fast, highly configurable and user-friendly
 imageboard software package. It is written in PHP and has few dependencies.
@@ -31,7 +17,7 @@ Requirements
 1.	PHP >= 5.4 (we still try to keep compatibility with php 5.3 as much as possible)
         PHP 7.0 is explicitly supported.
 2.	MySQL/MariaDB server
-3.	[mbstring](http://www.php.net/manual/en/mbstring.installation.php)
+3.	[mbstring](http://www.php.net/manual/en/mbstring.installation.php) 
 4.	[PHP GD](http://www.php.net/manual/en/intro.image.php)
 5.	[PHP PDO](http://www.php.net/manual/en/intro.pdo.php)
 
@@ -61,7 +47,7 @@ Installation
 	development version with:
 
         git clone git://github.com/vichan-devel/vichan.git
-
+	
 2.	Navigate to ```install.php``` in your web browser and follow the
 	prompts.
 3.	vichan should now be installed. Log in to ```mod.php``` with the
@@ -98,7 +84,7 @@ find support from a variety of sources:
 
 ### Tinyboard support
 vichan is based on a Tinyboard, so both engines have very much in common. These
-links may be helpful for you as well:
+links may be helpful for you as well: 
 
 *	Tinyboard documentation can be found [here](https://web.archive.org/web/20121016074303/http://tinyboard.org/docs/?p=Main_Page).
 
