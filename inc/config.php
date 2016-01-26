@@ -1192,9 +1192,21 @@
 
 	// Website favicon.
 	// $config['url_favicon'] = '/favicon.gif';
-	
+
 	// Try not to build pages when we shouldn't have to.
 	$config['try_smarter'] = true;
+
+	// A reduced disk-IO option that does not write the HTML or JSON files to disk. It writes them to a
+	// cache which then can be quickly retrieved by a webserver without hitting the disk at all.
+	// See nginx's HttpRedis2Module module for a hint about a possible deployment.
+
+	// If you don't have HttpRedis2Module, i've included a 404.php that you can use with an htaccess like:
+	// RewriteEngine On
+	// RewriteRule ^[^/]+/$ %{REQUEST_URI}/../../404.php [NC,L]
+	// RewriteRule ^[^/]+/[^/]+$ %{REQUEST_URI}/../../404.php [NC,L]
+	// RewriteRule ^[^/]+/res/[^/]+$ %{REQUEST_URI}/../../404.php [NC,L]
+	// This example assumes your URL includes one directory level, i.e. http://localhost/vichan/
+	$config['files_in_cache'] = false;
 
 	// EXPERIMENTAL: Defer static HTML building to a moment, when a given file is actually accessed.
 	// Warning: This option won't run out of the box. You need to tell your webserver, that a file

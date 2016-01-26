@@ -630,16 +630,6 @@ function purge($uri) {
 
 function file_write($path, $data, $simple = false, $skip_purge = false) {
 	global $config, $debug;
-	//echo "file_write($path, ", strlen($data), ", $simple, $skip_purge)<br>\n";
-	Cache::store('vichan_filecache_'.$path, $data, -1);
-	if ($config['gzip_static']) {
-		$bytes=strlen($data);
-		if ($bytes & ~0x3ff) {
-			Cache::store('vichan_filecache_'.$path.'.gz', gzencode($data), -1);
-		} else {
-			Cache::delete('vichan_filecache_'.$path.'.gz');
-		}
-	}
 
 	if (preg_match('/^remote:\/\/(.+)\:(.+)$/', $path, $m)) {
 		if (isset($config['remote'][$m[1]])) {
@@ -653,54 +643,65 @@ function file_write($path, $data, $simple = false, $skip_purge = false) {
 		}
 	}
 
-  /*
-	if (!$fp = fopen($path, $simple ? 'w' : 'c'))
-		error('Unable to open file for writing: ' . $path);
-
-	// File locking
-	if (!$simple && !flock($fp, LOCK_EX)) {
-		error('Unable to lock file: ' . $path);
-	}
-
-	// Truncate file
-	if (!$simple && !ftruncate($fp, 0))
-		error('Unable to truncate file: ' . $path);
-
-	// Write data
-	if (($bytes = fwrite($fp, $data)) === false)
-		error('Unable to write to file: ' . $path);
-
-	// Unlock
-	if (!$simple)
-		flock($fp, LOCK_UN);
-
-	// Close
-	if (!fclose($fp))
-		error('Unable to close file: ' . $path);
-  */
-	/**
-	 * Create gzipped file.
-	 *
-	 * When writing into a file foo.bar and the size is larger or equal to 1
-	 * KiB, this also produces the gzipped version foo.bar.gz
-	 *
-	 * This is useful with nginx with gzip_static on.
-	 */
-	/*
-	if ($config['gzip_static']) {
-		$gzpath = "$path.gz";
-
-		if ($bytes & ~0x3ff) {  // if ($bytes >= 1024)
-			if (file_put_contents($gzpath, gzencode($data), $simple ? 0 : LOCK_EX) === false)
-				error("Unable to write to file: $gzpath");
-			//if (!touch($gzpath, filemtime($path), fileatime($path)))
-			//	error("Unable to touch file: $gzpath");
-		}
-		else {
-			@unlink($gzpath);
+	if ($config['files_in_cache']) {
+		Cache::set('vichan_filecache_'.$path, $data);
+		if ($config['gzip_static']) {
+			$bytes=strlen($data);
+			if ($bytes & ~0x3ff) {
+				Cache::set('vichan_filecache_'.$path.'.gz', gzencode($data));
+			} else {
+				Cache::delete('vichan_filecache_'.$path.'.gz');
+			}
 		}
 	}
-  */
+	else {
+		if (!$fp = fopen($path, $simple ? 'w' : 'c'))
+			error('Unable to open file for writing: ' . $path);
+
+		// File locking
+		if (!$simple && !flock($fp, LOCK_EX)) {
+			error('Unable to lock file: ' . $path);
+		}
+
+		// Truncate file
+		if (!$simple && !ftruncate($fp, 0))
+			error('Unable to truncate file: ' . $path);
+
+		// Write data
+		if (($bytes = fwrite($fp, $data)) === false)
+			error('Unable to write to file: ' . $path);
+
+		// Unlock
+		if (!$simple)
+			flock($fp, LOCK_UN);
+
+		// Close
+		if (!fclose($fp))
+			error('Unable to close file: ' . $path);
+
+		/**
+		 * Create gzipped file.
+		 *
+		 * When writing into a file foo.bar and the size is larger or equal to 1
+		 * KiB, this also produces the gzipped version foo.bar.gz
+		 *
+		 * This is useful with nginx with gzip_static on.
+		 */
+
+		if ($config['gzip_static']) {
+			$gzpath = "$path.gz";
+
+			if ($bytes & ~0x3ff) {  // if ($bytes >= 1024)
+				if (file_put_contents($gzpath, gzencode($data), $simple ? 0 : LOCK_EX) === false)
+					error("Unable to write to file: $gzpath");
+				//if (!touch($gzpath, filemtime($path), fileatime($path)))
+				//	error("Unable to touch file: $gzpath");
+			}
+			else {
+				@unlink($gzpath);
+			}
+		}
+	}
 
 	if (!$skip_purge && isset($config['purge'])) {
 		// Purge cache
@@ -727,12 +728,6 @@ function file_write($path, $data, $simple = false, $skip_purge = false) {
 
 function file_unlink($path) {
 	global $config, $debug;
-	//echo "file_unlink($path)<br>\n";
-	if ($config['gzip_static']) {
-		Cache::delete('vichan_filecache_'.$path);
-	} else {
-		Cache::delete('vichan_filecache_'.$path.'.gz');
-	}
 
 	if ($config['debug']) {
 		if (!isset($debug['unlink']))
@@ -740,14 +735,18 @@ function file_unlink($path) {
 		$debug['unlink'][] = $path;
 	}
 
-	$ret=true;
-	/*
+
+	Cache::delete('vichan_filecache_'.$path);
+	if ($config['gzip_static']) {
+		Cache::delete('vichan_filecache_'.$path.'.gz');
+	}
+
 	$ret = @unlink($path);
 	if ($config['gzip_static']) {
 		$gzpath = "$path.gz";
 		@unlink($gzpath);
 	}
-*/
+
 	if (isset($config['purge']) && $path[0] != '/' && isset($_SERVER['HTTP_HOST'])) {
 		// Purge cache
 		if (basename($path) == $config['file_index']) {

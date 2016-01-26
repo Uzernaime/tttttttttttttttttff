@@ -90,48 +90,20 @@ class Cache {
 			case 'redis':
 				if (!self::$cache)
 					self::init();
-				self::$cache->setex($key, $expires, json_encode($value));
+
+				if ($expires === FALSE) {
+	                                self::$cache->set($key, json_encode($value));
+				}
+				else {
+					self::$cache->setex($key, $expires, json_encode($value));
+				}
+
 				break;
 			case 'apc':
 				apc_store($key, $value, $expires);
 				break;
 			case 'xcache':
 				xcache_set($key, $value, $expires);
-				break;
-			case 'fs':
-				$key = str_replace('/', '::', $key);
-				$key = str_replace("\0", '', $key);
-				file_put_contents('tmp/cache/'.$key, json_encode($value));
-				break;
-			case 'php':
-				self::$cache[$key] = $value;
-				break;
-		}
-
-		if ($config['debug'])
-			$debug['cached'][] = $key . ' (set)';
-	}
-	public static function store($key, $value) {
-		global $config, $debug;
-
-		$key = $config['cache']['prefix'] . $key;
-
-		switch ($config['cache']['enabled']) {
-			case 'memcached':
-				if (!self::$cache)
-					self::init();
-				self::$cache->set($key, $value);
-				break;
-			case 'redis':
-				if (!self::$cache)
-					self::init();
-				self::$cache->set($key, json_encode($value));
-				break;
-			case 'apc':
-				apc_store($key, $value);
-				break;
-			case 'xcache':
-				xcache_set($key, $value);
 				break;
 			case 'fs':
 				$key = str_replace('/', '::', $key);
